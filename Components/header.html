@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results Smart - Header Component</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;800&family=Inter:wght@400;500;700&display=swap"
+        rel="stylesheet">
+    <style>
+        /* BASE RESET FOR STANDALONE PREVIEW */
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #0b1a3a;
+            /* Deep navy from Why It Works page */
+            background-image: radial-gradient(circle at center top, rgba(79, 70, 229, 0.15) 0%, transparent 60%);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        /* COMPONENT VARIABLES */
+        :root {
+            --header-bg: linear-gradient(145deg, rgba(15, 23, 42, 0.85) 0%, rgba(8, 11, 26, 0.95) 100%);
+            --header-border: rgba(129, 140, 248, 0.2);
+            --text-main: #ffffff;
+            --text-muted: #cbd5e1;
+            --btn-grad-start: #312e81;
+            --btn-grad-end: #1e3a8a;
+            --btn-grad-hover-start: #3730a3;
+            --btn-grad-hover-end: #1e40af;
+            --glow-indigo: rgba(79, 70, 229, 0.5);
+            /* Slightly overfills 180px gap */
+            --header-height: 185px;
+        }
+
+        /* -------------------------------------
+           HEADER STRUCTURE
+           ------------------------------------- */
+        .rs-header {
+            width: 100%;
+            height: var(--header-height);
+            background: var(--header-bg);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-bottom: 1px solid var(--header-border);
+            position: sticky;
+            top: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0 4vw;
+            z-index: 9999;
+            box-shadow:
+                0 30px 60px -15px rgba(0, 0, 0, 0.6),
+                0 0 50px rgba(79, 70, 229, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .rs-header-inner {
+            width: 100%;
+            /* Expanding to dynamically use full available space intentionally */
+            max-width: 1800px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 2rem;
+            height: 100%;
+        }
+
+        /* -------------------------------------
+           LOGO
+           ------------------------------------- */
+        .rs-logo-container {
+            display: flex;
+            align-items: center;
+            flex-shrink: 0;
+            height: 100%;
+            z-index: 10001;
+            /* Stay above mobile menu */
+            position: relative;
+        }
+
+        /* Dark blue to dark violet fading glow behind logo */
+        .rs-logo-container::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 140%;
+            height: 140%;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(ellipse at center, rgba(79, 70, 229, 0.35) 0%, rgba(30, 58, 138, 0.2) 40%, transparent 70%);
+            filter: blur(25px);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .rs-logo {
+            /* Height increased to nearly fill header top to bottom */
+            height: 130px;
+            width: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 0 15px rgba(96, 165, 250, 0.4));
+            transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), filter 0.4s ease;
+            display: block;
+        }
+
+        .rs-logo:hover {
+            transform: scale(1.03);
+            filter: drop-shadow(0 0 25px rgba(96, 165, 250, 0.6));
+        }
+
+        /* -------------------------------------
+           NAVIGATION
+           ------------------------------------- */
+        .rs-nav {
+            display: flex;
+            align-items: center;
+            flex-grow: 1;
+            /* Spreading the nav buttons out across the full available center width */
+            justify-content: space-evenly;
+            padding: 0 4vw;
+            /* Ensure they don't crowd the logo or CTA */
+        }
+
+        .rs-nav-link {
+            text-decoration: none;
+            color: var(--text-muted);
+            /* Premium scalable typography and solid weight */
+            font-size: 1.15rem;
+            font-weight: 600;
+            letter-spacing: 0.03em;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            white-space: nowrap;
+            padding: 0.5rem 1rem;
+        }
+
+        .rs-nav-link:hover {
+            color: var(--text-main);
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.4), 0 0 30px rgba(96, 165, 250, 0.4);
+            transform: translateY(-1px);
+        }
+
+        .rs-nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #818cf8, transparent);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateX(-50%);
+            box-shadow: 0 0 10px rgba(129, 140, 248, 0.6);
+        }
+
+        .rs-nav-link:hover::after {
+            width: 80%;
+        }
+
+        /* -------------------------------------
+           CALL TO ACTION (CTA)
+           ------------------------------------- */
+        .rs-cta-container {
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            z-index: 10001;
+        }
+
+        .rs-cta-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            /* Enlarged to pair well with the taller premium header */
+            padding: 1.15rem 2.8rem;
+            background: linear-gradient(135deg, var(--btn-grad-start) 0%, var(--btn-grad-end) 100%);
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 700;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            border-radius: 12px;
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.15),
+                0 8px 20px rgba(0, 0, 0, 0.6);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .rs-cta-btn:hover {
+            transform: translateY(-3px);
+            background: linear-gradient(135deg, var(--btn-grad-hover-start) 0%, var(--btn-grad-hover-end) 100%);
+            box-shadow:
+                0 15px 30px rgba(0, 0, 0, 0.7),
+                0 0 30px var(--glow-indigo);
+        }
+
+        .rs-cta-btn:active {
+            transform: translateY(1px);
+            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Used in mobile menu */
+        .rs-mobile-cta {
+            display: none;
+        }
+
+        /* -------------------------------------
+           MOBILE MENU TOGGLE
+           ------------------------------------- */
+        .rs-menu-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 32px;
+            height: 20px;
+            cursor: pointer;
+            z-index: 10001;
+            background: transparent;
+            border: none;
+            padding: 0;
+            margin-left: 1.5rem;
+        }
+
+        .rs-menu-toggle span {
+            display: block;
+            width: 100%;
+            height: 2px;
+            background-color: var(--text-main);
+            border-radius: 2px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* -------------------------------------
+           RESPONSIVE RULES
+           ------------------------------------- */
+        @media (max-width: 1400px) {
+            .rs-nav {
+                padding: 0 2vw;
+            }
+
+            .rs-logo {
+                height: 110px;
+            }
+        }
+
+        @media (max-width: 1150px) {
+            .rs-nav {
+                padding: 0 1.5rem;
+            }
+
+            .rs-nav-link {
+                font-size: 1.05rem;
+                padding: 0.5rem;
+            }
+
+            .rs-logo {
+                height: 95px;
+            }
+        }
+
+        @media (max-width: 980px) {
+            .rs-menu-toggle {
+                display: flex;
+            }
+
+            /* Adjust header height and logo heavily for mobile */
+            .rs-header {
+                height: 105px;
+            }
+
+            .rs-logo {
+                height: 65px;
+            }
+
+            .rs-nav {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 100%;
+                max-width: 450px;
+                height: 100vh;
+                flex-direction: column;
+                justify-content: center;
+                background: linear-gradient(180deg, #0b1a3a 0%, #050b18 100%);
+                border-left: 1px solid rgba(129, 140, 248, 0.1);
+                box-shadow: -15px 0 40px rgba(0, 0, 0, 0.6);
+                transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                z-index: 10000;
+                padding: 4rem 2rem;
+                gap: 0;
+                /* Unset flex gaps on mobile list */
+            }
+
+            .rs-nav.is-open {
+                right: 0;
+            }
+
+            .rs-nav-link {
+                font-family: 'Outfit', sans-serif;
+                font-size: 1.6rem;
+                font-weight: 700;
+                width: 100%;
+                text-align: center;
+                padding: 1.2rem 0;
+            }
+
+            .rs-nav-link::after {
+                display: none;
+                /* remove underlines on mobile */
+            }
+
+            .rs-cta-container {
+                display: none;
+                /* Hide primary CTA in the top bar on mobile */
+            }
+
+            .rs-mobile-cta {
+                display: flex;
+                margin-top: 2.5rem;
+                width: 100%;
+                justify-content: center;
+            }
+
+            .rs-mobile-cta .rs-cta-btn {
+                width: 100%;
+                padding: 1.3rem;
+                font-size: 1.2rem;
+            }
+
+            /* Hamburger Animation to 'X' */
+            .rs-menu-toggle.is-open span:nth-child(1) {
+                transform: translateY(9px) rotate(45deg);
+            }
+
+            .rs-menu-toggle.is-open span:nth-child(2) {
+                opacity: 0;
+            }
+
+            .rs-menu-toggle.is-open span:nth-child(3) {
+                transform: translateY(-9px) rotate(-45deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- RS HEADER COMPONENT -->
+    <header class="rs-header">
+        <div class="rs-header-inner">
+
+            <!-- Logo -->
+            <a href="/" class="rs-logo-container" aria-label="Results Smart Home">
+                <img src="../assets/images/logo.png" alt="Results Smart" class="rs-logo">
+            </a>
+
+            <!-- Navigation Links -->
+            <nav class="rs-nav" id="rsNav">
+                <a href="/" class="rs-nav-link">Home</a>
+                <a href="/how-it-works" class="rs-nav-link">How It Works</a>
+                <a href="/demo" class="rs-nav-link">Demo</a>
+                <a href="/pricing" class="rs-nav-link">Pricing</a>
+                <a href="/blog" class="rs-nav-link">Blog</a>
+                <a href="/online-visibility-tool" class="rs-nav-link">Free Report</a>
+
+                <!-- Mobile only CTA -->
+                <div class="rs-mobile-cta">
+                    <a href="/online-visibility-tool" class="rs-cta-btn">Get Free Report</a>
+                </div>
+            </nav>
+
+            <!-- CTA Button (Desktop) -->
+            <div class="rs-cta-container">
+                <a href="/online-visibility-tool" class="rs-cta-btn">Get Free Report</a>
+            </div>
+
+            <!-- Hamburger Button -->
+            <button class="rs-menu-toggle" id="rsMenuToggle" aria-label="Toggle Navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+        </div>
+    </header>
+
+    <!-- MOBILE MENU SCRIPT -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const menuToggle = document.getElementById('rsMenuToggle');
+            const navMenu = document.getElementById('rsNav');
+
+            if (menuToggle && navMenu) {
+                // Toggle Menu
+                menuToggle.addEventListener('click', () => {
+                    const isOpen = navMenu.classList.contains('is-open');
+                    navMenu.classList.toggle('is-open');
+                    menuToggle.classList.toggle('is-open');
+
+                    // Prevent background scrolling on mobile
+                    document.body.style.overflow = isOpen ? '' : 'hidden';
+                });
+
+                // Close on link click
+                const links = navMenu.querySelectorAll('.rs-nav-link');
+                links.forEach(link => {
+                    link.addEventListener('click', () => {
+                        navMenu.classList.remove('is-open');
+                        menuToggle.classList.remove('is-open');
+                        document.body.style.overflow = '';
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,259 @@
+<!-- 
+IMPORTANT: This is the standalone Results Smart Header Component.
+It is designed to be reusable and match the 'How It Works' page visual style exactly.
+-->
+
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;800&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+    :root {
+        --rs-bg-center: #10224f;
+        --rs-bg-main: #0b1a3a;
+        --rs-bg-edge: #08142b;
+        --rs-text-white: #ffffff;
+        --rs-text-grey: #D1D5DB;
+        --rs-glow-blue: rgba(59, 130, 246, 0.25);
+        --rs-glow-indigo: rgba(79, 70, 229, 0.35);
+        --rs-header-height: 90px;
+    }
+
+    #rs-header {
+        position: sticky;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: var(--rs-header-height);
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 4vw;
+        background: linear-gradient(145deg, rgba(15, 23, 42, 0.5) 0%, rgba(8, 11, 25, 0.7) 100%);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border-bottom: 1px solid rgba(129, 140, 248, 0.15);
+        font-family: 'Inter', sans-serif;
+        color: var(--rs-text-white);
+    }
+
+    .rs-header-container {
+        width: 100%;
+        max-width: 1400px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 2rem;
+    }
+
+    /* === LOGO STYLE === */
+    .rs-logo-link {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        flex-shrink: 0;
+    }
+
+    .rs-logo-img {
+        height: 50px; /* Adjust based on actual logo aspect ratio */
+        width: auto;
+        /* Subtle glow based on 'Why It Works' requirements */
+        filter: drop-shadow(0 0 15px rgba(79, 70, 229, 0.45));
+        transition: transform 0.3s ease;
+    }
+
+    .rs-logo-link:hover .rs-logo-img {
+        transform: scale(1.03);
+    }
+
+    /* === NAVIGATION LINKS === */
+    .rs-nav {
+        display: flex;
+        align-items: center;
+        gap: 2.5rem;
+        flex-grow: 1;
+        justify-content: center;
+    }
+
+    .rs-nav-link {
+        color: var(--rs-text-grey);
+        text-decoration: none;
+        font-size: 1rem;
+        font-weight: 500;
+        letter-spacing: 0.01em;
+        transition: all 0.2s ease;
+        position: relative;
+    }
+
+    .rs-nav-link:hover {
+        color: var(--rs-text-white);
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    }
+
+    .rs-nav-link::after {
+        content: '';
+        position: absolute;
+        bottom: -6px;
+        left: 50%;
+        width: 0;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, #4f46e5, transparent);
+        transition: all 0.3s ease;
+        transform: translateX(-50%);
+    }
+
+    .rs-nav-link:hover::after {
+        width: 80%;
+    }
+
+    /* === CTA BUTTON === */
+    .rs-cta-btn {
+        display: inline-block;
+        padding: 0.85rem 1.8rem;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: #ffffff;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        text-decoration: none;
+        background: linear-gradient(135deg, #312e81 0%, #1e3a8a 100%);
+        border-radius: 12px;
+        box-shadow: 
+            inset 0 1px 0 rgba(255, 255, 255, 0.1),
+            0 6px 15px rgba(0, 0, 0, 0.5);
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        text-align: center;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+
+    .rs-cta-btn:hover {
+        transform: translateY(-2px);
+        background: linear-gradient(135deg, #3730a3 0%, #1e40af 100%);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.7), 0 0 15px rgba(79, 70, 229, 0.3);
+    }
+
+    .rs-cta-btn:active {
+        transform: translateY(1px);
+    }
+
+    /* === MOBILE MENU TOGGLE === */
+    .rs-mobile-toggle {
+        display: none;
+        flex-direction: column;
+        gap: 6px;
+        cursor: pointer;
+        z-index: 1001;
+        background: none;
+        border: none;
+        padding: 5px;
+    }
+
+    .rs-mobile-toggle span {
+        display: block;
+        width: 28px;
+        height: 2px;
+        background-color: var(--rs-text-white);
+        border-radius: 2px;
+        transition: 0.3s;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 1100px) {
+        .rs-nav { gap: 1.5rem; }
+    }
+
+    @media (max-width: 991px) {
+        .rs-mobile-toggle { display: flex; }
+        
+        .rs-nav {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 75%;
+            height: 100vh;
+            background: rgba(8, 11, 25, 0.98);
+            backdrop-filter: blur(20px);
+            flex-direction: column;
+            justify-content: center;
+            gap: 2.5rem;
+            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+            border-left: 1px solid rgba(129, 140, 248, 0.2);
+        }
+
+        .rs-nav.is-active { right: 0; }
+
+        .rs-nav-link { font-size: 1.4rem; font-family: 'Outfit', sans-serif; font-weight: 700; color: white; }
+        
+        .rs-header-container .rs-cta-btn { display: none; } /* Hide main CTA on mobile header */
+        .rs-nav .rs-cta-btn { display: inline-block; margin-top: 1rem; } /* Show in mobile menu */
+        
+        /* Mobile Hamburger Animation */
+        .rs-mobile-toggle.is-active span:nth-child(1) { transform: rotate(45deg) translate(5px, 6px); }
+        .rs-mobile-toggle.is-active span:nth-child(2) { opacity: 0; }
+        .rs-mobile-toggle.is-active span:nth-child(3) { transform: rotate(-45deg) translate(6px, -7px); }
+    }
+</style>
+
+<header id="rs-header">
+    <div class="rs-header-container">
+        <!-- Logo Left -->
+        <a href="/" class="rs-logo-link">
+            <img src="/assets/images/logo.png" alt="Results Smart Logo" class="rs-logo-img">
+        </a>
+
+        <!-- Navigation Center (Mobile: Right Drawer) -->
+        <nav class="rs-nav" id="rs-nav-menu">
+            <a href="/" class="rs-nav-link">Home</a>
+            <a href="/how-it-works" class="rs-nav-link">How It Works</a>
+            <a href="/demo" class="rs-nav-link">Demo</a>
+            <a href="/pricing" class="rs-nav-link">Pricing</a>
+            <a href="/blog" class="rs-nav-link">Blog</a>
+            <a href="/online-visibility-tool" class="rs-nav-link">Free Report</a>
+            <!-- Mobile-only CTA -->
+            <a href="/online-visibility-tool" class="rs-cta-btn" style="display: none; padding: 1.1rem 2.5rem;" id="rs-mobile-cta">Get Free Report</a>
+        </nav>
+
+        <!-- CTA Button Right (Desktop Only) -->
+        <a href="/online-visibility-tool" class="rs-cta-btn" id="rs-desktop-cta">Get Free Report</a>
+
+        <!-- Hamburger Menu -->
+        <button class="rs-mobile-toggle" id="rs-menu-toggle" aria-label="Toggle navigation">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </div>
+</header>
+
+<script>
+    (function() {
+        const toggleBtn = document.getElementById('rs-menu-toggle');
+        const navMenu = document.getElementById('rs-nav-menu');
+        const mobileCta = document.getElementById('rs-mobile-cta');
+
+        if (toggleBtn && navMenu) {
+            toggleBtn.addEventListener('click', () => {
+                toggleBtn.classList.toggle('is-active');
+                navMenu.classList.toggle('is-active');
+                
+                // Show/hide mobile CTA based on menu state
+                if (navMenu.classList.contains('is-active')) {
+                    mobileCta.style.display = 'inline-block';
+                } else {
+                    setTimeout(() => { mobileCta.style.display = 'none'; }, 300);
+                }
+            });
+
+            // Close menu when clicking links
+            const navLinks = document.querySelectorAll('.rs-nav-link');
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    toggleBtn.classList.remove('is-active');
+                    navMenu.classList.remove('is-active');
+                });
+            });
+        }
+    })();
+</script>
