@@ -1,0 +1,2015 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How It Works - Results Smart</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;800&family=Inter:wght@400;500;700&display=swap"
+        rel="stylesheet">
+    <style>
+        /* === BASE & RESET === */
+        :root {
+            --bg-center: #10224f;
+            --bg-main: #0b1a3a;
+            --bg-edge: #08142b;
+
+            --text-white: #ffffff;
+            --text-grey: #D1D5DB;
+            /* Soft light grey for explanatory paragraphs */
+
+            --glow-blue: rgba(59, 130, 246, 0.25);
+            --glow-indigo: rgba(79, 70, 229, 0.35);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body,
+        html {
+            background-color: var(--bg-main);
+            color: var(--text-white);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            width: 100%;
+            min-height: 100vh;
+        }
+
+        /* === SPACING ZONES === */
+        .spacing-zone {
+            width: 100%;
+            height: 180px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: repeating-linear-gradient(45deg,
+                    rgba(255, 255, 255, 0.02),
+                    rgba(255, 255, 255, 0.02) 10px,
+                    rgba(255, 255, 255, 0.05) 10px,
+                    rgba(255, 255, 255, 0.05) 20px);
+            border-top: 1px dashed rgba(255, 255, 255, 0.1);
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.3);
+            font-family: monospace;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            position: relative;
+            z-index: 100;
+        }
+
+        /* === ATMOSPHERE & VIGNETTE === */
+        .ambient-lighting {
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+            background: radial-gradient(circle at 50% 50%, var(--bg-center) 0%, var(--bg-main) 45%, var(--bg-edge) 100%);
+        }
+
+        .ambient-lighting::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+            background: radial-gradient(ellipse at center,
+                    rgba(0, 0, 0, 0) 52%,
+                    rgba(0, 0, 0, 0.12) 68%,
+                    rgba(8, 20, 43, 0.28) 84%,
+                    rgba(8, 20, 43, 0.48) 100%);
+        }
+
+        /* Viewport Vignette removed to support unified page gradient */
+
+        .main-content {
+            position: relative;
+            z-index: 10;
+            /* Strictly isolates and elevates content safely above the vignette and atmosphere */
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 8rem 0;
+            gap: 4rem;
+        }
+
+        /* === SAMPLE HEADING SECTION === */
+        .heading-section {
+            width: 100%;
+            /* Fully unconstrained outer wrapper so the layout breaks free of the center strip */
+            max-width: 100%;
+            padding: 0 4vw;
+            text-align: center;
+            position: relative;
+        }
+
+        /* Headline glow removed to unify background levels */
+
+        .headline-container {
+            /* Explicitly widened inner block */
+            width: 100%;
+            max-width: 1800px;
+            margin: 0 auto 2rem auto;
+            /* Heavy 3D Perspective on the container */
+            transform: perspective(1200px) rotateX(8deg);
+            transform-style: preserve-3d;
+            /* Heavy shadow stack using CSS drop-shadow filters so it accurately traces the text */
+            filter: drop-shadow(0px 10px 30px rgba(0, 0, 0, 0.6)) drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.4));
+        }
+
+        /* Generalized the headline selector so h2 tags inherit the approved 3D hero styling */
+        .headline {
+            font-family: 'Outfit', sans-serif;
+            font-size: clamp(3rem, 6vw, 5.5rem);
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            text-transform: capitalize;
+            transform: translateZ(40px);
+            /* Extrusion separation */
+        }
+
+        .headline .white-part {
+            color: #ffffff;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            /* Sharper, more stable shadow */
+        }
+
+        .headline .gradient-part {
+            background: linear-gradient(180deg, #1e40af 0%, #312e81 50%, #4c1d95 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+        }
+
+        /* Edge lighting simulation for the 3D text */
+        .headline::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            mix-blend-mode: overlay;
+        }
+
+        /* === CTA ELEMENTS === */
+        .cta-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 2rem 0;
+            position: relative;
+            z-index: 10;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            padding: 1.1rem 2.8rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #ffffff;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            text-decoration: none;
+            background: linear-gradient(135deg, #312e81 0%, #1e3a8a 100%);
+            border-radius: 12px;
+
+            /* Sharp, solid premium depth */
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.1),
+                /* Micro top-edge light */
+                0 6px 12px rgba(0, 0, 0, 0.6);
+            /* Sharp vertical drop shadow */
+
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .btn-primary:active {
+            transform: translateY(1px);
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.5);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            background: linear-gradient(135deg, #3730a3 0%, #1e40af 100%);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.7);
+        }
+
+        .btn-secondary {
+            display: inline-block;
+            padding: 1.1rem 2.8rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #cbd5e1;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            text-decoration: none;
+            background: linear-gradient(135deg, #0f172a 0%, #020617 100%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.6);
+
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .btn-secondary:active {
+            transform: translateY(1px);
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.5);
+        }
+
+        .btn-secondary:hover {
+            color: #ffffff;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border-color: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.7);
+        }
+
+        .cta-micro {
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            color: #94a3b8;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            font-weight: 500;
+        }
+
+        /* === NON-HERO SECTION HEADINGS === */
+        .subheadline-container {
+            width: 100%;
+            max-width: 1800px;
+            margin: 0 auto 1.5rem auto;
+            transform: perspective(1200px) rotateX(12deg);
+            transform-style: preserve-3d;
+            filter: drop-shadow(0px 15px 25px rgba(0, 0, 0, 0.6));
+        }
+
+        .section-headline {
+            font-family: 'Outfit', sans-serif;
+            font-size: clamp(2.2rem, 4.5vw, 3.8rem);
+            /* Clearly scaled down from Hero */
+            font-weight: 800;
+            line-height: 1.15;
+            letter-spacing: -0.02em;
+            text-transform: capitalize;
+            transform: translateZ(40px);
+
+            /* Unified premium restrained color (solid crisp slate/white) */
+            color: #f8fafc;
+
+            /* Sharp, premium dropped shadow - no cartoonish extrusion */
+            text-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .subtext {
+            font-size: clamp(1.2rem, 2vw, 1.5rem);
+            /* Color removed for explicit per-element control as requested */
+            max-width: 1800px;
+            width: 100%;
+            margin: 0 auto;
+            line-height: 1.7;
+            transform: perspective(1200px) translateZ(10px);
+            text-shadow: 0 10px 20px rgba(0, 0, 0, 0.8);
+            text-align: center;
+        }
+
+        .text-white {
+            color: #ffffff !important;
+        }
+
+        .text-grey {
+            color: var(--text-grey) !important;
+        }
+
+        .text-content-wrapper {
+            width: 100%;
+            max-width: 1800px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            align-items: center;
+            text-align: center;
+        }
+
+        /* === SAMPLE FLOATING ELEMENT === */
+        .floating-section {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            perspective: 1500px;
+            padding: 0 2rem;
+        }
+
+        .floating-element {
+            width: 100%;
+            /* Widened interface noticeably */
+            max-width: 1800px;
+            padding: 3.5rem 6vw;
+            background: linear-gradient(145deg, rgba(15, 23, 42, 0.4) 0%, rgba(8, 11, 25, 0.6) 100%);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+
+            /* Thin edge lighting */
+            border-top: 1px solid rgba(129, 140, 248, 0.4);
+            border-left: 1px solid rgba(129, 140, 248, 0.2);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.8);
+            border-right: 1px solid rgba(0, 0, 0, 0.4);
+
+            border-radius: 16px;
+
+            /* Dramatic shadow stack & elevation */
+            box-shadow:
+                0 50px 80px -20px rgba(0, 0, 0, 0.95),
+                0 30px 40px -15px rgba(0, 0, 0, 0.8),
+                0 0 50px -10px rgba(79, 70, 229, 0.3),
+                inset 0 0 20px rgba(96, 165, 250, 0.05);
+
+            transform-style: preserve-3d;
+            transform: rotateX(8deg) translateY(-10px);
+            transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .floating-element:hover {
+            transform: rotateX(0deg) translateY(-25px) scale(1.03);
+            box-shadow:
+                0 80px 100px -20px rgba(0, 0, 0, 0.95),
+                0 40px 50px -10px rgba(0, 0, 0, 0.8),
+                0 0 70px 0px rgba(79, 70, 229, 0.5),
+                inset 0 0 30px rgba(96, 165, 250, 0.1);
+            border-top: 1px solid rgba(129, 140, 248, 0.7);
+        }
+
+        .floating-element-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, rgba(96, 165, 250, 0.2), rgba(67, 56, 202, 0.4));
+            border: 1px solid rgba(129, 140, 248, 0.5);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5), inset 0 0 15px rgba(255, 255, 255, 0.1);
+            transform: translateZ(30px);
+            flex-shrink: 0;
+        }
+
+        .floating-element-text {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .floating-element-text h3 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.5rem;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+            transform: translateZ(20px);
+            text-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .floating-element-text p {
+            font-size: 1.25rem;
+            line-height: 1.6;
+            color: #ffffff;
+            transform: translateZ(10px);
+            text-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        /* === STANDALONE TRANSITION STATEMENT === */
+        .transition-section {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* Tightly reduced vertical space so it bridges smoothly between elements */
+            padding: 1.5rem 4vw;
+            position: relative;
+            /* Counteracting the global 12rem gap specifically for this bridge to pull it upward */
+            margin-top: -8rem;
+        }
+
+        .transition-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, rgba(79, 70, 229, 0.15) 0%, transparent 60%);
+            filter: blur(40px);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .standalone-transition {
+            font-family: 'Inter', sans-serif;
+            font-size: clamp(1.2rem, 2vw, 1.6rem);
+            font-weight: 500;
+            text-align: center;
+            /* Wider measure for premium, balanced transitions */
+            max-width: 1800px;
+            width: 100%;
+            margin: 0 auto;
+            line-height: 1.6;
+            letter-spacing: 0.01em;
+
+            position: relative;
+            transform: perspective(1200px) translateZ(5px);
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.8), 0 0 20px rgba(96, 165, 250, 0.15);
+        }
+
+        /* === HERO SECTION — PREMIUM TWO-COLUMN LAYOUT === */
+        .hero-section {
+            width: 100%;
+            max-width: 100%;
+            padding: 4rem 5vw 5rem;
+            display: flex;
+            align-items: center;
+            gap: 6rem;
+            position: relative;
+        }
+
+        .hero-left {
+            flex: 1 1 55%;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            text-align: left;
+            min-width: 0;
+        }
+
+        .hero-eyebrow {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: #818cf8;
+            margin-bottom: 1.6rem;
+            opacity: 0.9;
+        }
+
+        .hero-headline {
+            font-family: 'Outfit', sans-serif;
+            font-size: clamp(2.8rem, 5vw, 5rem);
+            font-weight: 800;
+            line-height: 1.08;
+            letter-spacing: -0.025em;
+            margin-bottom: 2rem;
+            text-transform: capitalize;
+            transform: perspective(1200px) rotateX(5deg);
+            transform-style: preserve-3d;
+            filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.55));
+        }
+
+        .hero-headline .white-part {
+            color: #ffffff;
+        }
+
+        .hero-headline .gradient-part {
+            background: linear-gradient(180deg, #6366f1 0%, #3730a3 60%, #4c1d95 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-body {
+            font-family: 'Inter', sans-serif;
+            font-size: clamp(1.05rem, 1.6vw, 1.25rem);
+            line-height: 1.75;
+            color: var(--text-grey);
+            max-width: 620px;
+            margin-bottom: 2.8rem;
+        }
+
+        .hero-cta-row {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .hero-micro {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            color: #64748b;
+            letter-spacing: 0.03em;
+        }
+
+        /* --- RIGHT COLUMN: AI CONVERSATION PANEL --- */
+        .hero-right {
+            flex: 1 1 40%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-width: 0;
+            perspective: 1400px;
+        }
+
+        .ai-panel {
+            width: 100%;
+            max-width: 460px;
+            background: linear-gradient(145deg, rgba(15, 23, 50, 0.75) 0%, rgba(8, 13, 32, 0.85) 100%);
+            backdrop-filter: blur(24px);
+            border-radius: 16px;
+            border: 1px solid rgba(129, 140, 248, 0.18);
+            border-top: 1px solid rgba(129, 140, 248, 0.35);
+            box-shadow:
+                0 40px 70px -15px rgba(0, 0, 0, 0.85),
+                0 0 40px rgba(79, 70, 229, 0.18),
+                inset 0 0 20px rgba(99, 102, 241, 0.04);
+            transform: rotateX(6deg) rotateY(-4deg);
+            transform-style: preserve-3d;
+            animation: heroFloat 6s ease-in-out infinite;
+            overflow: hidden;
+        }
+
+        @keyframes heroFloat {
+
+            0%,
+            100% {
+                transform: rotateX(6deg) rotateY(-4deg) translateY(0px);
+            }
+
+            50% {
+                transform: rotateX(4deg) rotateY(-2deg) translateY(-12px);
+            }
+        }
+
+        .ai-panel-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 1.4rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.025);
+        }
+
+        .ai-panel-dots {
+            display: flex;
+            gap: 6px;
+        }
+
+        .ai-panel-dots span {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .ai-panel-dots span:nth-child(1) {
+            background: #ef4444;
+            opacity: 0.7;
+        }
+
+        .ai-panel-dots span:nth-child(2) {
+            background: #f59e0b;
+            opacity: 0.7;
+        }
+
+        .ai-panel-dots span:nth-child(3) {
+            background: #22c55e;
+            opacity: 0.7;
+        }
+
+        .ai-panel-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.45);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .ai-panel-status {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75rem;
+            color: #22c55e;
+            font-weight: 500;
+        }
+
+        .ai-panel-status::before {
+            content: '';
+            width: 7px;
+            height: 7px;
+            background: #22c55e;
+            border-radius: 50%;
+            box-shadow: 0 0 6px #22c55e;
+            animation: livePulse 2s ease-in-out infinite;
+        }
+
+        @keyframes livePulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.35;
+            }
+        }
+
+        .ai-chat-body {
+            padding: 1.4rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.1rem;
+        }
+
+        .ai-msg {
+            display: flex;
+            gap: 0.7rem;
+            align-items: flex-start;
+        }
+
+        .ai-msg.user {
+            flex-direction: row-reverse;
+        }
+
+        .ai-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.68rem;
+            font-weight: 700;
+        }
+
+        .ai-avatar.bot {
+            background: linear-gradient(135deg, #4f46e5, #1d4ed8);
+            color: #fff;
+            box-shadow: 0 0 12px rgba(79, 70, 229, 0.5);
+        }
+
+        .ai-avatar.usr {
+            background: linear-gradient(135deg, #1e3a5f, #0f2040);
+            color: #94a3b8;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .ai-bubble {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.84rem;
+            line-height: 1.55;
+            padding: 0.65rem 0.95rem;
+            border-radius: 10px;
+            max-width: 82%;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .ai-bubble.bot {
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.22), rgba(30, 58, 138, 0.25));
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            color: #e0e7ff;
+        }
+
+        .ai-bubble.usr {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            color: #94a3b8;
+        }
+
+        .ai-panel-footer {
+            padding: 1rem 1.4rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+        }
+
+        .ai-input-bar {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            padding: 0.55rem 0.9rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.78rem;
+            color: rgba(255, 255, 255, 0.25);
+        }
+
+        .ai-send-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #4f46e5, #2563eb);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4);
+            flex-shrink: 0;
+        }
+
+        .ai-send-btn svg {
+            width: 14px;
+            height: 14px;
+            fill: none;
+            stroke: #fff;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        @media (max-width: 900px) {
+            .hero-section {
+                flex-direction: column;
+                gap: 3.5rem;
+                padding: 3rem 5vw 4rem;
+                align-items: center;
+                text-align: center;
+            }
+
+            .hero-left {
+                align-items: center;
+            }
+
+            .hero-body {
+                text-align: center;
+                max-width: 100%;
+            }
+
+            .hero-cta-row {
+                align-items: center;
+            }
+
+            .hero-right {
+                width: 100%;
+                max-width: 460px;
+            }
+
+            .ai-panel {
+                transform: none;
+                animation: heroFloatMobile 6s ease-in-out infinite;
+            }
+
+            @keyframes heroFloatMobile {
+
+                0%,
+                100% {
+                    transform: translateY(0);
+                }
+
+                50% {
+                    transform: translateY(-8px);
+                }
+            }
+        }
+
+
+
+        /* =============================================
+           AUTHORITATIVE HEADER STYLES — SINGLE SOURCE
+           ============================================= */
+
+        .rs-header {
+            width: 100%;
+            height: 195px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 5vw;
+            position: relative;
+            z-index: 1000;
+            background: transparent;
+            perspective: 2500px;
+        }
+
+        .rs-header-container {
+            width: 100%;
+            max-width: 1800px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transform: rotateX(1.8deg);
+            transform-style: preserve-3d;
+        }
+
+        /* LOGO: DUAL-LAYER KNOCKOUT GLOW */
+        .rs-logo-container {
+            flex-shrink: 0;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            position: relative;
+            transform: translateZ(80px);
+        }
+
+        /* Layer 1: Deep-indigo atmospheric bloom — refined */
+        .rs-logo-container::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle at center,
+                    rgba(79, 70, 229, 0.28) 0%,
+                    rgba(30, 58, 138, 0.14) 45%,
+                    transparent 70%);
+            filter: blur(90px);
+            z-index: -2;
+            pointer-events: none;
+        }
+
+        /* Layer 2: Electric core — integrated, not dominant */
+        .rs-logo-container::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -56%);
+            width: 320px;
+            height: 320px;
+            background: radial-gradient(circle at center,
+                    rgba(34, 211, 238, 0.35) 0%,
+                    rgba(59, 130, 246, 0.22) 35%,
+                    transparent 65%);
+            filter: blur(40px);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .rs-logo-container img {
+            height: 175px;
+            width: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 20px 50px rgba(0, 0, 0, 0.95));
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            image-rendering: -webkit-optimize-contrast;
+        }
+
+        .rs-logo-container:hover img {
+            transform: scale(1.03) translateY(-8px);
+            filter: drop-shadow(0 40px 80px rgba(0, 0, 0, 1));
+        }
+
+        /* NAV: CRISP PRESERVED */
+        .rs-nav {
+            flex-grow: 1;
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            padding: 0 5rem;
+            transform: translateZ(50px);
+        }
+
+        .rs-nav-link {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: #ffffff;
+            text-decoration: none;
+            text-transform: capitalize;
+            letter-spacing: 0.05em;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            text-shadow: none;
+            /* Absolute crispness — no haze */
+            -webkit-font-smoothing: antialiased;
+            backface-visibility: hidden;
+            transform: translateZ(0);
+        }
+
+        .rs-nav-link:hover {
+            color: #ffffff;
+            transform: translateY(-4px) translateZ(20px);
+            text-shadow: 0 0 15px rgba(129, 140, 248, 1);
+        }
+
+        .rs-nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -14px;
+            left: 50%;
+            width: 0;
+            height: 3px;
+            background: #818cf8;
+            box-shadow: 0 0 20px #4f46e5;
+            transition: all 0.4s ease;
+            transform: translateX(-50%);
+        }
+
+        .rs-nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* CTA: TRUE TACTILE 3D STACK */
+        .rs-cta-container {
+            flex-shrink: 0;
+            transform: translateZ(120px);
+        }
+
+        .rs-header .btn-primary {
+            padding: 1.35rem 3.8rem;
+            font-size: 1.35rem;
+            font-weight: 900;
+            letter-spacing: 0.12em;
+            transform: scale(1.15);
+
+            /* Structured, more grounded shape */
+            border-radius: 8px;
+
+            /* Subtle flatter gradient — directional, not perfect */
+            background: linear-gradient(175deg, #5c56e8 0%, #2033a0 55%, #1a2e88 100%);
+            border: none;
+
+            /* Directional lighting: thin top-edge highlight only */
+            border-top: 1px solid rgba(255, 255, 255, 0.32);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.15),
+                /* Single top-lit inner edge */
+                0 4px 0 #0e1a4a,
+                /* Tight solid base — grounded */
+                0 6px 14px rgba(12, 20, 70, 0.6),
+                /* Directional drop shadow — tight, offset */
+                0 0 22px rgba(79, 70, 229, 0.28);
+            /* Minimal glow — barely there */
+
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
+            transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .rs-header .btn-primary:active {
+            transform: scale(1.1) translateY(3px);
+            box-shadow:
+                0 1px 0 #0e1a4a,
+                0 3px 8px rgba(12, 20, 70, 0.55);
+        }
+
+        .rs-header .btn-primary:hover {
+            transform: scale(1.18) translateY(-4px);
+            background: linear-gradient(175deg, #6862f2 0%, #2840be 55%, #1e38a8 100%);
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.2),
+                0 6px 0 #0e1a4a,
+                0 10px 22px rgba(12, 20, 70, 0.65),
+                0 0 32px rgba(99, 102, 241, 0.4);
+        }
+
+        /* MOBILE HAMBURGER */
+        .rs-mobile-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 9px;
+            cursor: pointer;
+            padding: 15px;
+            z-index: 1100;
+        }
+
+        .rs-mobile-toggle span {
+            display: block;
+            width: 40px;
+            height: 3px;
+            background: #ffffff;
+            border-radius: 4px;
+            transition: 0.3s;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.8);
+        }
+
+        @media (max-width: 1400px) {
+            .rs-nav {
+                padding: 0 2rem;
+            }
+
+            .rs-nav-link {
+                font-size: 1.15rem;
+            }
+        }
+
+        @media (max-width: 991px) {
+            .rs-header {
+                height: 130px;
+            }
+
+            .rs-logo-container img {
+                height: 100px;
+            }
+
+            .rs-mobile-toggle {
+                display: flex;
+            }
+
+            .rs-cta-container {
+                display: none;
+            }
+.rs-header-container {
+    justify-content: space-between;
+}
+
+.rs-logo-container {
+    transform: none !important;
+    z-index: 1000;
+}
+
+.rs-mobile-toggle {
+    z-index: 1300;
+}
+            .rs-nav {
+    position: fixed;
+    top: 82px;
+    right: -100%;
+    width: min(78vw, 320px);
+    height: auto;
+    max-height: calc(100vh - 100px);
+    background: radial-gradient(circle at top right, var(--bg-center) 0%, var(--bg-edge) 100%);
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 1.25rem;
+    padding: 1.35rem 1.25rem 1.5rem;
+    transition: right 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: -20px 20px 60px rgba(0, 0, 0, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 18px 0 0 18px;
+    overflow-y: auto;
+    z-index: 1200;
+}
+
+            .rs-nav.is-active {
+                right: 0;
+            }
+
+            .rs-nav-link {
+    font-size: 1.2rem;
+    line-height: 1.2;
+    width: 100%;
+}
+
+            .rs-mobile-toggle.is-active span:nth-child(1) {
+                transform: rotate(45deg) translate(9px, 9px);
+            }
+
+            .rs-mobile-toggle.is-active span:nth-child(2) {
+                opacity: 0;
+            }
+
+            .rs-mobile-toggle.is-active span:nth-child(3) {
+                transform: rotate(-45deg) translate(5px, -5px);
+            }
+        }
+
+        /* =============================================
+           PREMIUM FOOTER — REUSING EXISTING SYSTEM
+           ============================================= */
+        .rs-footer {
+            width: 100%;
+            padding: 1.5rem 5vw 0.5rem;
+            position: relative;
+            z-index: 100;
+            background: transparent;
+            /* Enhanced divider visibility */
+            border-top: 1px solid rgba(255, 255, 255, 0.14);
+            perspective: 2500px;
+            margin-top: 10rem;
+        }
+
+        .rs-footer-container {
+            width: 100%;
+            max-width: 1800px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
+            gap: 5rem;
+            transform: rotateX(1.8deg);
+            transform-style: preserve-3d;
+        }
+
+        .rs-footer-brand {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            transform: translateZ(40px);
+            align-items: flex-start;
+        }
+
+        /* Precise Logo Calibration to exactly match Header Proportions */
+        .rs-footer .rs-logo-container {
+            height: 175px;
+            width: fit-content;
+            position: relative;
+        }
+
+        .rs-footer .rs-logo-container::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle at center, rgba(79, 70, 229, 0.28) 0%, rgba(30, 58, 138, 0.14) 45%, transparent 70%);
+            filter: blur(90px);
+            z-index: -2;
+            pointer-events: none;
+        }
+
+        .rs-footer .rs-logo-container::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -56%);
+            width: 320px;
+            height: 320px;
+            background: radial-gradient(circle at center, rgba(34, 211, 238, 0.35) 0%, rgba(59, 130, 246, 0.22) 35%, transparent 65%);
+            filter: blur(40px);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .rs-footer .rs-logo-container img {
+            height: 175px;
+            width: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 20px 50px rgba(0, 0, 0, 0.95));
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            image-rendering: -webkit-optimize-contrast;
+        }
+
+        .rs-footer .rs-logo-container:hover img {
+            transform: scale(1.03) translateY(-8px);
+            filter: drop-shadow(0 40px 80px rgba(0, 0, 0, 1));
+        }
+
+        .rs-footer-statement {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: var(--text-grey);
+            max-width: 340px;
+            margin-top: 1rem;
+        }
+
+        .rs-footer-column {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            transform: translateZ(30px);
+            margin-top: 9rem;
+            /* Pushes columns down drastically */
+        }
+
+        .rs-footer-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 800;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+        }
+
+        .rs-footer-link {
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            color: var(--text-grey);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            opacity: 0.7;
+        }
+
+        .rs-footer-link:hover {
+            color: #ffffff;
+            opacity: 1;
+            transform: translateX(5px);
+        }
+
+        .rs-footer-cta {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            transform: translateZ(50px);
+            margin-top: 1.5rem;
+            /* Aligns with grid */
+        }
+
+        .rs-footer-cta h3 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #ffffff;
+            line-height: 1.2;
+            margin-bottom: 2rem;
+            /* Creates safe space to prevent button overlap */
+        }
+
+        /* CTA Button: EXACT Match to Header CTA */
+        .rs-footer .btn-primary {
+            padding: 1.35rem 3.8rem;
+            font-size: 1.35rem;
+            font-weight: 900;
+            letter-spacing: 0.12em;
+            transform: scale(1.15);
+            transform-origin: left center;
+            /* Prevents scaling across layout bounds */
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            background: linear-gradient(175deg, #5c56e8 0%, #2033a0 55%, #1a2e88 100%);
+            border: none;
+            border-top: 1px solid rgba(255, 255, 255, 0.32);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.15),
+                0 4px 0 #0e1a4a,
+                0 6px 14px rgba(12, 20, 70, 0.6),
+                0 0 22px rgba(79, 70, 229, 0.28);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
+            transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .rs-footer .btn-primary:active {
+            transform: scale(1.1) translateY(3px);
+            box-shadow: 0 1px 0 #0e1a4a, 0 3px 8px rgba(12, 20, 70, 0.55);
+        }
+
+        .rs-footer .btn-primary:hover {
+            transform: scale(1.18) translateY(-4px);
+            background: linear-gradient(175deg, #6862f2 0%, #2840be 55%, #1e38a8 100%);
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.2),
+                0 6px 0 #0e1a4a,
+                0 10px 22px rgba(12, 20, 70, 0.65),
+                0 0 32px rgba(99, 102, 241, 0.4);
+        }
+
+        .rs-footer-bottom {
+            width: 100%;
+            max-width: 1800px;
+            margin: 0.5rem auto 0;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .rs-footer-legal {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .rs-footer-legal-link {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.55);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .rs-footer-legal-link:hover {
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+
+        .rs-footer-legal-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: #ffffff;
+            transition: width 0.3s ease;
+        }
+
+        .rs-footer-legal-link:hover::after {
+            width: 100%;
+        }
+
+        .rs-copyright {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        @media (max-width: 1100px) {
+            .rs-footer-container {
+                grid-template-columns: 1fr 1fr;
+                gap: 4rem;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .rs-footer-container {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .rs-footer-brand,
+            .rs-footer-column,
+            .rs-footer-cta {
+                align-items: center;
+            }
+
+            .rs-footer-bottom {
+                flex-direction: column;
+                gap: 2rem;
+            }
+        }
+
+        /* =============================================
+           MOBILE CATCH-ALL RESPONSIVENESS FIXES
+           ============================================= */
+        @media (max-width: 900px) {
+
+            /* Layout & Spacing */
+            .main-content {
+                padding: 1.5rem 0 !important;
+                gap: 2.5rem !important;
+                overflow-x: hidden;
+            }
+
+            /* Force exact desktop vignette to the body container to fix viewport rendering */
+            body {
+                background-color: var(--bg-main) !important;
+            }
+
+            .ambient-lighting {
+                display: block !important;
+                position: fixed !important;
+                top: 0 !important;
+                left: 0 !important;
+                width: 100vw !important;
+                height: 100vh !important;
+                z-index: 0 !important;
+                pointer-events: none !important;
+            }
+
+            /* Remove off-canvas menu shadow leaking into the right side of the hero section */
+            .rs-nav:not(.is-active) {
+                box-shadow: none !important;
+            }
+
+            /* Vertical Spacing Normalization */
+            .heading-section[style],
+            .heading-section {
+                padding: 0 5vw !important;
+                margin-top: 2rem !important;
+                margin-bottom: 1.5rem !important;
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            /* Tighter visual connection below Hero chat section */
+            .hero-section+.heading-section {
+                margin-top: -2rem !important;
+            }
+
+            .text-content-wrapper {
+                margin-top: 1.25rem !important;
+                gap: 1rem !important;
+                width: 100% !important;
+                padding: 0 !important;
+            }
+
+            /* Top Icon / Logo Centering */
+            .rs-header-container {
+                justify-content: center !important;
+                position: relative;
+            }
+
+            .rs-mobile-toggle {
+                position: absolute !important;
+                right: 0;
+                top: 50%;
+                transform: translateY(-50%) !important;
+            }
+
+            /* Typography & Readable Text Widths */
+            .subtext {
+                font-size: 1.15rem !important;
+                padding: 0 !important;
+                width: 100% !important;
+                text-align: center !important;
+                box-sizing: border-box;
+            }
+
+            /* Text Wrapping Control (Balance lines, no orphans) */
+            .subtext,
+            .hero-headline,
+            .section-headline,
+            .hero-body,
+            .rs-footer-statement,
+            .standalone-transition {
+                text-wrap: balance !important;
+            }
+
+            /* Remove forced breaks on mobile to prevent awkward narrow wrapping */
+            .subtext br,
+            .standalone-transition br,
+            .text-content-wrapper p br,
+            .hero-headline br,
+            .section-headline br {
+                display: none !important;
+            }
+
+            /* Buttons & CTAs */
+            .cta-wrapper[style],
+            .cta-wrapper {
+                margin-top: 1.5rem !important;
+                flex-direction: column !important;
+                align-items: center !important;
+                width: 100% !important;
+                padding: 0 !important;
+                gap: 1.2rem !important;
+            }
+
+            .btn-primary,
+            .btn-secondary,
+            .rs-header .btn-primary,
+            .rs-footer .btn-primary {
+                padding: 1.1rem 1.5rem !important;
+                font-size: 1.1rem !important;
+                width: 100% !important;
+                max-width: 340px !important;
+                margin: 0 auto !important;
+                box-sizing: border-box;
+                text-align: center;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .rs-footer .btn-primary {
+                transform: none !important;
+            }
+
+            .rs-footer .btn-primary:hover {
+                transform: translateY(-2px) !important;
+            }
+
+            .rs-footer .btn-primary:active {
+                transform: translateY(2px) !important;
+            }
+
+            .cta-micro {
+                flex-direction: column !important;
+                align-items: center !important;
+                text-align: center !important;
+                gap: 0.5rem !important;
+                margin-top: 1rem !important;
+                justify-content: center !important;
+            }
+
+            /* Text and Element Centering Fix */
+            .standalone-transition,
+            .rs-footer-statement {
+                text-align: center !important;
+                padding: 0 !important;
+            }
+
+            .hero-left,
+            .rs-footer-brand,
+            .rs-footer-column,
+            .rs-footer-cta {
+                align-items: center !important;
+                text-align: center !important;
+            }
+
+            .rs-footer-bottom {
+                flex-direction: column !important;
+                justify-content: center !important;
+                gap: 1.5rem !important;
+                text-align: center !important;
+            }
+
+            /* Floating Element Fallback */
+            .floating-element {
+                flex-direction: column !important;
+                text-align: center !important;
+                padding: 2.5rem 5vw !important;
+                gap: 1.5rem !important;
+            }
+
+            /* Footer Layout and Spacing Issues */
+            .rs-footer {
+                margin-top: 3rem !important;
+                padding: 1.5rem 5vw 2rem !important;
+            }
+
+            .rs-footer-container {
+                grid-template-columns: 1fr !important;
+                gap: 3rem !important;
+            }
+
+            .rs-footer-column {
+                margin-top: 0 !important;
+            }
+
+            /* Footer Logo Centering and Glow Sizing */
+            .rs-footer .rs-logo-container,
+            .rs-header .rs-logo-container {
+                margin: 0 auto;
+                justify-content: center;
+            }
+
+            .rs-footer .rs-logo-container::before {
+                width: 300px !important;
+                height: 300px !important;
+                filter: blur(50px) !important;
+            }
+
+            .rs-footer .rs-logo-container::after {
+                width: 150px !important;
+                height: 150px !important;
+                filter: blur(25px) !important;
+            }
+        }
+.ambient-lighting {
+  position: relative;
+}
+
+.ambient-lighting::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  box-shadow: inset 0 0 220px 40px rgba(0, 0, 0, 0.55);
+}
+html, body {
+  min-height: 100%;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  box-shadow: inset 0 0 220px 40px rgba(0, 0, 0, 0.55);
+  z-index: 9999;
+}
+
+    </style>
+</head>
+
+<body>
+<div style="position:fixed;top:120px;left:20px;z-index:99999;background:red;color:white;padding:12px;font-size:24px;">
+ROOT FILE
+</div>
+    <!-- PREMIUM SEAMLESS HEADER -->
+    <header class="rs-header">
+        <div class="rs-header-container">
+            <!-- FAR LEFT: LOGO -->
+            <div class="rs-logo-container">
+                <a href="../Homepage/index.html">
+                    <img src="../Assets/Images/logo.png" alt="Results Smart">
+                </a>
+            </div>
+
+            <!-- CENTER: NAVIGATION (Spread across total center space) -->
+            <nav class="rs-nav" id="rsNav">
+                <a href="../Homepage/index.html" class="rs-nav-link">Home</a>
+                <a href="../How It Works Page/how-it-works.html" class="rs-nav-link">How It Works</a>
+                <a href="../Demo Scheduling Page/index.html" class="rs-nav-link">Demo</a>
+                <a href="../Pricing/index.html" class="rs-nav-link">Pricing</a>
+                <a href="../Blog page/index.html" class="rs-nav-link">Blog</a>
+                <a href="../Online Visibility Tool/index.html" class="rs-nav-link">Free Report</a>
+            </nav>
+
+            <!-- FAR RIGHT: CTA -->
+            <div class="rs-cta-container">
+                <a href="../Online Visibility Tool/index.html" class="btn-primary">Get Free Report</a>
+            </div>
+
+            <!-- MOBILE TOGGLE -->
+            <div class="rs-mobile-toggle" id="rsToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Atmospheric Layers -->
+   <main class="main-content">
+
+
+        <!-- ==================================================== -->
+        <!-- SECTION 1: HERO + FIRST INTERACTION (MERGED) -->
+        <!-- ==================================================== -->
+        <!-- HERO: PREMIUM TWO-COLUMN -->
+        <section class="hero-section">
+
+            <!-- LEFT: COPY & CTA -->
+            <div class="hero-left">
+                <p class="hero-eyebrow">AI-Powered Lead Engagement</p>
+
+                <h1 class="hero-headline">
+                    <span class="white-part">How Our Smart Systems Engage Leads</span><br>
+                    <span class="gradient-part">and Turn Conversations into Customers</span>
+                </h1>
+
+                <p class="hero-body">
+                    When someone calls, messages, or visits your website, our Smart systems immediately engage every
+                    lead—starting a real conversation, gathering contact details, and guiding them toward a sale
+                    or booked appointment, automatically.
+                </p>
+
+                <div class="hero-cta-row">
+                    <a href="/visibility" class="btn-primary">See What's Costing You Customers</a>
+                    <p class="hero-micro">Free &nbsp;•&nbsp; No obligation &nbsp;•&nbsp; Results in minutes</p>
+                </div>
+            </div>
+
+            <!-- RIGHT: AI CONVERSATION VISUAL -->
+            <div class="hero-right">
+                <div class="ai-panel">
+
+                    <div class="ai-panel-header">
+                        <div class="ai-panel-dots">
+                            <span></span><span></span><span></span>
+                        </div>
+                        <span class="ai-panel-title">Smart AI Agent</span>
+                        <span class="ai-panel-status">Live</span>
+                    </div>
+
+                    <div class="ai-chat-body">
+
+                        <div class="ai-msg">
+                            <div class="ai-avatar bot">AI</div>
+                            <div class="ai-bubble bot">Hi! I missed your call to Johnson Plumbing. I'm their AI
+                                assistant — can I help you schedule a service visit?</div>
+                        </div>
+
+                        <div class="ai-msg user">
+                            <div class="ai-avatar usr">JD</div>
+                            <div class="ai-bubble usr">Yeah, my kitchen sink is leaking. How soon can someone come out?
+                            </div>
+                        </div>
+
+                        <div class="ai-msg">
+                            <div class="ai-avatar bot">AI</div>
+                            <div class="ai-bubble bot">We have openings tomorrow between 9–11am or 2–4pm. Which works
+                                best for you?</div>
+                        </div>
+
+                        <div class="ai-msg user">
+                            <div class="ai-avatar usr">JD</div>
+                            <div class="ai-bubble usr">Morning works. What's your address?</div>
+                        </div>
+
+                        <div class="ai-msg">
+                            <div class="ai-avatar bot">AI</div>
+                            <div class="ai-bubble bot">Perfect — I've booked you for tomorrow at 9am. A confirmation
+                                text is on its way. ✓</div>
+                        </div>
+
+                    </div>
+
+                    <div class="ai-panel-footer">
+                        <div class="ai-input-bar">Type a message…</div>
+                        <div class="ai-send-btn">
+                            <svg viewBox="0 0 24 24">
+                                <line x1="22" y1="2" x2="11" y2="13" />
+                                <polygon points="22 2 15 22 11 13 2 9 22 2" />
+                            </svg>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </section>
+
+        <!-- PAIN AMPLIFIER -->
+        <section class="heading-section" style="padding-top: 2rem;">
+            <div class="text-content-wrapper">
+                <p class="subtext text-white">
+                    Your business is missing opportunities every single day and you don't even realize it
+                </p>
+                <p class="subtext text-white" style="font-weight: 500;">
+                    Missed calls. Website visitors who leave without action. Slow follow-ups that cost you real
+                    customers.
+                </p>
+                <p class="subtext text-white" style="font-weight: 500;">
+                    Our systems are designed to catch, respond, and convert those moments automatically.
+                </p>
+            </div>
+        </section>
+
+
+
+        <!-- ==================================================== -->
+        <!-- SECTION 2: KNOWLEDGE BASE -->
+        <!-- ==================================================== -->
+
+        <section class="heading-section" style="margin-top: 80px;">
+            <div class="subheadline-container">
+                <h2 class="section-headline">
+                    Your System Will Be Built On Detailed Knowledge Of Your Business
+                </h2>
+            </div>
+
+            <div class="text-content-wrapper" style="margin-top: -20px;">
+                <p class="subtext text-grey">
+                    Before your system ever interacts with a customer, we create a highly comprehensive knowledge
+                    base<br>full of detailed information about your business services, pricing, policies,
+                    processes,<br>and data on your specific industry—your AI agents will use this knowledge base
+                    to<br>handle real customer questions and conversations accurately.
+                </p>
+                <p class="subtext text-grey">
+                    This is not a basic setup. It is carefully built and refined so the system can operate in dynamic
+                    real-world situations<br>where customers ask different types of questions, change direction, or
+                    provide incomplete information.
+                </p>
+                <p class="subtext text-grey">
+                    Your system will naturally and promptly respond to every missed call, text message, social media
+                    comment<br>and DM with context, consistency, and accuracy—not generic or scripted
+                    answers—before<br>your leads reach out to your competitor.
+                </p>
+            </div>
+
+            <div class="cta-wrapper" style="margin-top: 95px;">
+                <p class="subtext text-white"
+                    style="margin-bottom: 0; font-weight: 600; font-size: clamp(1.4rem, 2.5vw, 1.8rem);">
+                    Curious what our systems could be fixing inside your business right now?
+                </p>
+                <a href="/visibility" class="btn-primary" style="margin-top: 32px; margin-bottom: 48px;">Get Your Free
+                    Business Insights</a>
+                <div class="cta-micro text-white"
+                    style="flex-wrap: wrap; justify-content: center; gap: 2rem; margin-top: 0;">
+                    <span>✔ Takes less than 60 seconds</span>
+                    <span>✔ No setup required</span>
+                    <span>✔ Instant results</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================================================== -->
+        <!-- SECTION 4: DECISION-MAKING, TIMING, AND ACTION -->
+        <!-- ==================================================== -->
+
+        <section class="heading-section" style="margin-top: 80px;">
+            <div class="subheadline-container">
+                <h2 class="section-headline">
+                    Our Systems Use Data and Logic To Determine
+                    <br>
+                    When and What To Do Next
+                </h2>
+            </div>
+
+            <div class="text-content-wrapper" style="margin-top: 25px;">
+                <p class="subtext text-grey">
+                    As conversations happen and customer data is collected, your Smart system
+                    uses that information to make informed decisions.
+                </p>
+                <p class="subtext text-grey">
+                    Workflows act as the decision-making structure behind the system. They account for customer
+                    behavior,<br>responses, timing, and all information available to determine the next automated
+                    action.
+                </p>
+                <p class="subtext text-grey">
+                    Based on accumulated data your system will initiate the right process at the right time—whether
+                    that’s starting a conversation,<br>triggering a follow-up, updating the customer’s status, or moving
+                    them forward in your sales process.
+                </p>
+                <p class="subtext text-grey">
+                    Nothing is random. Every automation is calculated and based on real data,
+                    customer behavior, and the current state of that specific customer.
+                </p>
+                <p class="subtext text-white">
+                    This isn’t guesswork or generic automation.
+                </p>
+                <p class="subtext text-grey">
+                    Our systems are built specifically around how your business operates and uses all collected
+                    information<br>about each customer so every response, follow-up and action is the right move.
+                </p>
+            </div>
+        </section>
+
+        <!-- ==================================================== -->
+        <!-- SECTION 5: FOLLOW-UP, MEMORY, AND ADAPTATION -->
+        <!-- ==================================================== -->
+        <section class="heading-section" style="margin-top: 80px;">
+            <div class="subheadline-container">
+                <h2 class="section-headline">
+                    Follow-Ups Are Timed, Personalized, And Based On Customer History and Current Status
+                </h2>
+            </div>
+
+            <div class="text-content-wrapper" style="margin-top: 20px;">
+                <p class="subtext text-grey">
+                    Our systems do not rely on fixed or generic follow-up sequences and messages.
+                </p>
+                <p class="subtext text-grey">
+                    It uses collected customer data and behavior to trigger the best next step.
+                </p>
+                <p class="subtext text-grey">
+                    All conversations, transcripts, and activity are stored inside your Customer
+                    Relationship<br>Management system, creating a complete record for every contact.
+                </p>
+                <div class="subtext text-grey" style="text-align: center;">
+                    That information allows your system to:<br>
+                    <span style="display: block; margin-top: 8px;">• continue conversations with context</span>
+                    <span style="display: block; margin-top: 3px;">• adjust messaging based on behavior</span>
+                    <span style="display: block; margin-top: 3px;">• personalize follow-up based on interest and
+                        intent</span>
+                    <span style="display: block; margin-top: 3px;">• execute more relevant follow-up and communication
+                        over time</span>
+                </div>
+                <p class="subtext text-grey">
+                    The result is communication that feels relevant and well-timed instead of repetitive or automated.
+                </p>
+            </div>
+        </section>
+
+        <!-- ADDED TRANSITIONS -->
+        <section class="transition-section" style="flex-direction: column; gap: 2.5rem; margin-top: -1.5rem;">
+            <div class="transition-glow" style="height: 150%;"></div>
+            <p class="standalone-transition text-white">
+                All of this happens within a structured system that you can see, control, and step into at any time.
+            </p>
+            <p class="standalone-transition text-white" style="margin-top: -10px;">
+                Even with all of this automation happening behind the scenes, you are never removed from the process.
+            </p>
+        </section>
+
+        <!-- ==================================================== -->
+        <!-- SECTION 6: VISIBILITY, CONTROL, AND CUSTOM BUILD -->
+        <!-- ==================================================== -->
+        <section class="heading-section">
+            <div class="subheadline-container">
+                <h2 class="section-headline">
+                    You Stay In Control—While Your System Runs 24/7
+                </h2>
+            </div>
+
+            <div class="text-content-wrapper" style="margin-top: 25px;">
+                <p class="subtext text-grey">
+                    Even though your Smart system is handling conversations, follow-up, and
+                    decision-making<br>automatically, you have full visibility into everything happening.
+                </p>
+                <p class="subtext text-grey">
+                    You can review stored conversation transcripts and watch AI agents interactions with<br>customers in
+                    real time, as they happen, and step in at any time.
+                </p>
+                <p class="subtext text-grey">
+                    Customers can also request a real person, and the system can transfer the interaction when someone
+                    is available.
+                </p>
+                <p class="subtext text-grey">
+                    Behind all of this is a system that is fully customized to your business. We don’t use templates or
+                    copy-and-paste setups.
+                </p>
+                <p class="subtext text-grey">
+                    Your system will be built around how your business operates and fine tuned to your specifications,
+                    so it can<br>function accurately in real-world situations and handle customer interactions the way
+                    you would.
+                </p>
+            </div>
+        </section>
+
+        <!-- ==================================================== -->
+        <!-- SECTION 7: FINAL CTA -->
+        <!-- ==================================================== -->
+        <section class="heading-section" style="margin-bottom: 3.5rem; margin-top: 80px;">
+            <div class="subheadline-container" style="max-width: 1400px;">
+                <h2 class="section-headline">
+                    See How This Would Work Inside Your Business
+                </h2>
+            </div>
+            <p class="subtext text-grey" style="margin-bottom: 3.5rem; margin-top: 30px;">
+                We’ll show you exactly how your Smart system will be built, how it will engage your customers, and how
+                it will use<br>data, logic, and timing to turn more of your incoming opportunities into paying
+                customers.
+            </p>
+
+            <div class="cta-wrapper"
+                style="flex-direction: row; justify-content: center; gap: 2rem; flex-wrap: wrap; margin-top: 0;">
+                <a href="/demo" class="btn-primary" style="margin-top: 32px;">Book Your Demo →</a>
+                <a href="/pricing" class="btn-secondary" style="margin-top: 32px;">See Pricing →</a>
+            </div>
+        </section>
+  </main>
+
+
+
+
+    <!-- PRODUCTION PREMIUM FOOTER WAS HERE, REMOVED AS DUPLICATE -->
+
+
+    <script>
+        document.getElementById('rsToggle').addEventListener('click', function () {
+            this.classList.toggle('is-active');
+            document.getElementById('rsNav').classList.toggle('is-active');
+        });
+
+        // Close menu on link click
+        document.querySelectorAll('.rs-nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('rsToggle').classList.remove('is-active');
+                document.getElementById('rsNav').classList.remove('is-active');
+            });
+        });
+    </script>
+    <!-- Header Mobile Interaction Logic -->
+    <script>
+        (function () {
+            const toggle = document.getElementById('rsToggle');
+            const nav = document.getElementById('rsNav');
+
+            if (toggle && nav) {
+                toggle.addEventListener('click', () => {
+                    toggle.classList.toggle('active');
+                    nav.classList.toggle('open');
+                });
+
+                // Close menu on link interaction
+                document.querySelectorAll('.rs-nav-link').forEach(link => {
+                    link.addEventListener('click', () => {
+                        toggle.classList.remove('active');
+                        nav.classList.remove('open');
+                    });
+                });
+            }
+        })();
+    </script>
+
+    <!-- PRODUCTION PREMIUM FOOTER -->
+    <footer class="rs-footer">
+        <div class="rs-footer-container">
+            <!-- COLUMN 1: BRAND AREA -->
+            <div class="rs-footer-brand">
+                <div class="rs-logo-container">
+                    <a href="../Homepage/index.html">
+                        <img src="../Assets/Images/logo.png" alt="Results Smart Logo">
+                    </a>
+                </div>
+                <p class="rs-footer-statement">
+                    Advanced AI systems, automation, and lead handling designed to accelerate business
+                    growth—automatically.
+                </p>
+            </div>
+
+            <!-- COLUMN 2: NAVIGATION MAIN -->
+            <div class="rs-footer-column">
+                <h4 class="rs-footer-title">Product</h4>
+                <a href="../Homepage/index.html" class="rs-footer-link">Home</a>
+                <a href="../How It Works Page/how-it-works.html" class="rs-footer-link">How It Works</a>
+                <a href="../Demo Scheduling Page/index.html" class="rs-footer-link">Demo</a>
+                <a href="../Pricing/index.html" class="rs-footer-link">Pricing</a>
+            </div>
+
+            <!-- COLUMN 3: NAVIGATION RESOURCES -->
+            <div class="rs-footer-column">
+                <h4 class="rs-footer-title">Resources</h4>
+                <a href="../Blog page/index.html" class="rs-footer-link">Blog</a>
+                <a href="../Online Visibility Tool/index.html" class="rs-footer-link">Free Report</a>
+                <a href="../Support Page/index.html" class="rs-footer-link">Support</a>
+            </div>
+
+            <!-- COLUMN 4: CLOSING CTA -->
+            <div class="rs-footer-cta">
+                <h3>Ready to Scale Your Growth?</h3>
+                <a href="../Online Visibility Tool/index.html" class="btn-primary">Get Your Free Report</a>
+            </div>
+        </div>
+
+        <!-- LOWER FOOTER: LEGAL & COPYRIGHT -->
+        <div class="rs-footer-bottom">
+            <div class="rs-footer-legal">
+                <a href="../Privacy Policy/index.html" class="rs-footer-legal-link">Privacy Policy</a>
+                <a href="../Terms of Service/index.html" class="rs-footer-legal-link">Terms of Service</a>
+            </div>
+            <p class="rs-copyright">
+                &copy; 2026 Results Smart. All rights reserved.
+            </p>
+        </div>
+    </footer>
+</body>
+
+</html>
